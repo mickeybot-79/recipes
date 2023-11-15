@@ -125,7 +125,7 @@ const createNewRecipe = async (req, res) => {
     const updatedName = []
     for (let i = 0; i < nameArray.length; i++) {
         const wordToCompare = nameArray[i]
-        if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+        if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
             updatedName.push(wordToCompare)
         }
     }
@@ -136,7 +136,7 @@ const createNewRecipe = async (req, res) => {
         const updatedIngredient = []
         for (let j = 0; j < currentIngredient.split(' ').length; j++) {
             const wordToCompare = currentIngredient.split(' ')[j]
-            if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+            if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
                 updatedIngredient.push(wordToCompare)
             }
         }
@@ -153,7 +153,7 @@ const createNewRecipe = async (req, res) => {
         const updatedStep = []
         for (let j = 0; j < currentStep.split(' ').length; j++) {
             const wordToCompare = currentStep.split(' ')[j]
-            if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+            if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
                 updatedStep.push(wordToCompare)
             }
         }
@@ -186,12 +186,14 @@ const createNewRecipe = async (req, res) => {
 
 const updateRecipeData = async (req, res) => {
     const { id, name, category, ingredients, preparation, cookingTime, servings, pictures } = req.body
+    const recipe = await Recipe.findOne({ _id: id }).exec()
+    if (!recipe) return res.sendStatus(404)
 
     const nameArray = name.split(' ')
     const updatedName = []
     for (let i = 0; i < nameArray.length; i++) {
         const wordToCompare = nameArray[i]
-        if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+        if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
             updatedName.push(wordToCompare)
         }
     }
@@ -202,7 +204,7 @@ const updateRecipeData = async (req, res) => {
         const updatedIngredient = []
         for (let j = 0; j < currentIngredient.split(' ').length; j++) {
             const wordToCompare = currentIngredient.split(' ')[j]
-            if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+            if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
                 updatedIngredient.push(wordToCompare)
             }
         }
@@ -219,15 +221,13 @@ const updateRecipeData = async (req, res) => {
         const updatedStep = []
         for (let j = 0; j < currentStep.split(' ').length; j++) {
             const wordToCompare = currentStep.split(' ')[j]
-            if (!rejectedWords.includes(wordToCompare) && !ESrejectedWords.includes(wordToCompare)) {
+            if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
                 updatedStep.push(wordToCompare)
             }
         }
         updatedPreparation.push(updatedStep.join(' '))
     }
 
-    const recipe = await Recipe.findOne({ _id: id }).exec()
-    if (!recipe) return res.sendStatus(404)
     const date = new Date()
     const today = date.getTime()
     recipe.name = updatedName.join(' ')
