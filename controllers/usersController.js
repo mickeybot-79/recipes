@@ -1,5 +1,6 @@
 const User = require('../model/User')
 const rejectedWords = require('../config/rejectedWords')
+const ESrejectedWords = require('../config/ESrejectedWords')
 const jwtDecode = require('jwt-decode')
 const bcrypt = require('bcrypt')
 const { deleteUserLogs } = require('./logsController')
@@ -62,7 +63,17 @@ const updateUser = async (req, res) => {
     }
     if (req.body.image) foundUser.image = req.body.image
     if (req.body.country) foundUser.country = req.body.country
-    if (req.body.about) foundUser.about = req.body.about
+    if (req.body.about) {
+        const aboutArray = req.body.about.split(' ')
+        const updatedAbout = []
+        for (let i = 0; i < aboutArray.length; i++) {
+            const wordToCompare = aboutArray[i]
+            if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
+                updatedAbout.push(wordToCompare)
+            }
+        }
+        foundUser.about = updatedAbout.join(' ')
+    }
     if (req.body.pwd) {
         var hashedPwd = await bcrypt.hash(req.body.pwd, 10)
         foundUser.password = hashedPwd

@@ -3,10 +3,22 @@ const Recipe = require('../model/Recipe')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const rejectedWords = require('../config/rejectedWords')
+const ESrejectedWords = require('../config/ESrejectedWords')
 
 const handleNewUser = async (req, res) => {
     const { user, pwd, country, about, image, tempId } = req.body
     if (!user) return res.sendStatus(400) //'message': 'Username and password are required.'
+    if (!rejectedWords.includes(user.toLowerCase()) || !ESrejectedWords.includes(user.toLowerCase())) {
+        res.status(401).json({'error': 'username contains forbidden words'})
+    }
+    const aboutArray = about.split(' ')
+    const updatedAbout = []
+    for (let i = 0; i < aboutArray.length; i++) {
+        const wordToCompare = aboutArray[i]
+        if (!rejectedWords.includes(wordToCompare.toLowerCase()) && !ESrejectedWords.includes(wordToCompare.toLowerCase())) {
+            updatedAbout.push(wordToCompare)
+        }
+    }
     const duplicate = await User.findOne({ username: user }).exec()
     if (duplicate) return res.sendStatus(409) //'error': `User ${user} already exists.`
     try {
@@ -19,7 +31,7 @@ const handleNewUser = async (req, res) => {
             "createdOn": today,
             "lastUpdated": today,
             "country": country,
-            "about": about,
+            "about": updatedAbout.join(' '),
             "image": image,
             "tempId": tempId ? tempId : '',
             "favorites": [],
