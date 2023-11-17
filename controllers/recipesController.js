@@ -111,7 +111,6 @@ const getMyRecipesByCategory = async (req, res) => {
 const getRecipe = async (req, res) => {
     if (!req?.body?.id) return res.sendStatus(400) //'message': 'Recipe ID is required.'
     const recipe = await Recipe.findOne({ searchField: req.body.id }).exec()
-    if (!recipe) console.log('no recipe')
     if (!recipe) return res.sendStatus(204) //'message': `No recipes found with that name.`
     const originalLength = recipe.comments.length
     recipe.comments.splice(0, (recipe.comments.length - parseInt(req.body.commentsSlice)))
@@ -375,6 +374,23 @@ const getMyFavoriteRecipes = async (req, res) => {
     res.json(userFavorites)
 }
 
+const getCollectionRecipesData = async (req, res) => {
+    const { recipes } = req.body
+    if (!recipes) return res.sendStatus(204) //'message': 'No recipes found.'
+    const allRecipes = []
+    for (let i = 0; i < recipes.length; i++) {
+        const currentRecipe = await Recipe.findOne({_id: recipes[i]})
+        allRecipes.push({
+            _id: currentRecipe._id,
+            name: currentRecipe.name,
+            pictures: currentRecipe.pictures,
+            searchField: currentRecipe.searchField
+        })
+    }
+    if (!allRecipes.length) return res.sendStatus(204) //'message': 'You still have not created any recipes. Would you like to start?'
+    res.json(allRecipes)
+}
+
 module.exports = {
     getRecipes,
     getRecipesByName,
@@ -395,5 +411,6 @@ module.exports = {
     getUserRecipes,
     getBestRecipes,
     getNewestRecipes,
-    getMyFavoriteRecipes
+    getMyFavoriteRecipes,
+    getCollectionRecipesData
 }

@@ -50,4 +50,7 @@ router.route('/comments')
 router.route('/favorites')
     .post(recipesController.getMyFavoriteRecipes)
 
+router.route('/collections')
+    .post(recipesController.getCollectionRecipesData)
+
 module.exports = router
