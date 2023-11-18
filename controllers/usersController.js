@@ -85,7 +85,7 @@ const updateUser = async (req, res) => {
 
 const updateFavorite = async (req, res) => {
     if (!req?.body?.userID) return res.sendStatus(400)
-    const foundUser = await User.findOne({username: req.body.userID}).exec()
+    const foundUser = await User.findOne({_id: req.body.userID}).exec()
     if (!foundUser) return res.sendStatus(204)
     if (req.body.stat) {
         if (!foundUser.favorites.includes(req.body.recipeID)) {
