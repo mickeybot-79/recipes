@@ -1,6 +1,6 @@
 const allowedOrigins = [
     //'null',
-    'http://localhost:3000',
+    // 'http://localhost:3000',
     'https://recipexplorer.onrender.com'
  ]
 
