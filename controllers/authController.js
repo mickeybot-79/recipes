@@ -8,7 +8,7 @@ const ESrejectedWords = require('../config/ESrejectedWords')
 const handleNewUser = async (req, res) => {
     const { user, pwd, country, about, image, tempId } = req.body
     if (!user) return res.sendStatus(400) //'message': 'Username and password are required.'
-    if (!rejectedWords.includes(user.toLowerCase()) || !ESrejectedWords.includes(user.toLowerCase())) {
+    if (rejectedWords.includes(user.toLowerCase()) || ESrejectedWords.includes(user.toLowerCase())) {
         res.status(401).json({'error': 'username contains forbidden words'})
     }
     const aboutArray = about.split(' ')
