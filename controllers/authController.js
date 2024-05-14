@@ -41,7 +41,20 @@ const handleNewUser = async (req, res) => {
             "active": true,
             "isTemporary": pwd ? false : true
         })
-        res.status(201).json({'user': result}) //'success': `New user ${user} created!`
+        const accessToken = jwt.sign(
+        {
+            "UserInfo": {
+                "username": foundUser.username,
+                "id": foundUser._id,
+                "lastUpdated": foundUser.lastUpdated,
+                "isTemporary": foundUser.isTemporary
+            }
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1d' }
+        )
+        //res.json({ accessToken })
+        res.status(201).json({'user': result, 'accessToken': accessToken}) //'success': `New user ${user} created!`
     } catch (err) {
         res.status(500).json({'message': err.message})
     }
