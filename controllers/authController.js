@@ -44,10 +44,10 @@ const handleNewUser = async (req, res) => {
         const accessToken = jwt.sign(
         {
             "UserInfo": {
-                "username": foundUser.username,
-                "id": foundUser._id,
-                "lastUpdated": foundUser.lastUpdated,
-                "isTemporary": foundUser.isTemporary
+                "username": user,
+                "id": result._id,
+                "lastUpdated": today,
+                "isTemporary": pwd ? false : true
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
