@@ -57,7 +57,7 @@ const deleteUserLogs = async (userID) => {
 }
 
 const testTest = async (req, res) => {
-    res.status(200).json('test')
+    res.status(401).json('error')
     //res.send('test')
 }
 
