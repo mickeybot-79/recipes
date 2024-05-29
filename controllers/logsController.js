@@ -56,4 +56,8 @@ const deleteUserLogs = async (userID) => {
     }
 }
 
-module.exports = { handleLogEntries, getLogs, removeRecipeLogs, deleteLogEntry, deleteUserLogs }
+const testTest = async (req, res) => {
+    res.send('test')
+}
+
+module.exports = { handleLogEntries, getLogs, removeRecipeLogs, deleteLogEntry, deleteUserLogs, testTest }
