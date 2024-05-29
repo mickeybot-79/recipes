@@ -14,4 +14,7 @@ router.route('/')
 router.route('/entry')
     .delete(logsController.deleteLogEntry)
 
+router.route('/testtest')
+    .post(logsController.testTest)
+
 module.exports = router
