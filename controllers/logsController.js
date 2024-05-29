@@ -57,7 +57,8 @@ const deleteUserLogs = async (userID) => {
 }
 
 const testTest = async (req, res) => {
-    res.send('test')
+    res.status(200).json('test')
+    //res.send('test')
 }
 
 module.exports = { handleLogEntries, getLogs, removeRecipeLogs, deleteLogEntry, deleteUserLogs, testTest }
