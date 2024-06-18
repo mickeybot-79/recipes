@@ -349,6 +349,7 @@ const getUserRecipes = async (req, res) => {
 
 const getBestRecipes = async (req, res) => {
     const { lng } = req.body
+    if (lng === 'en-US') lng === 'en'
     const recipes = await Recipe.find()
     const lngRecipes = recipes.filter(recipe => recipe.language === lng)
     const bestRecipes = lngRecipes.sort((a, b) => b.likes - a.likes).slice(0, 20)
@@ -357,6 +358,7 @@ const getBestRecipes = async (req, res) => {
 
 const getNewestRecipes = async (req, res) => {
     const { lng } = req.body
+    if (lng === 'en-US') lng === 'en'
     const recipes = await Recipe.find()
     const lngRecipes = recipes.filter(recipe => recipe.language === lng)
     const newestRecipes = lngRecipes.sort((a, b) => b.createdOn - a.createdOn).slice(0, 20)
