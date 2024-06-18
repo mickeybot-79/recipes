@@ -348,7 +348,7 @@ const getUserRecipes = async (req, res) => {
 }
 
 const getBestRecipes = async (req, res) => {
-    const { lng } = req.body
+    var { lng } = req.body
     if (lng === 'en-US') lng = 'en'
     const recipes = await Recipe.find()
     const lngRecipes = recipes.filter(recipe => recipe.language === lng)
@@ -357,7 +357,7 @@ const getBestRecipes = async (req, res) => {
 }
 
 const getNewestRecipes = async (req, res) => {
-    const { lng } = req.body
+    var { lng } = req.body
     if (lng === 'en-US') lng = 'en'
     const recipes = await Recipe.find()
     const lngRecipes = recipes.filter(recipe => recipe.language === lng)
